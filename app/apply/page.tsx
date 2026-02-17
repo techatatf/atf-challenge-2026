@@ -59,9 +59,8 @@ export default function ApplyPage() {
             <div className="border border-border rounded-lg overflow-hidden bg-card shadow-sm">
               <iframe
                 src="https://gadainfo.anasatech.com/f/atf-ai-school-registration-bjdt4n"
-                width="100%"
-                height="600"
-                // frameBorder={0}
+                className="w-full border-0"
+                height="1500"
                 title="ATF AI School Registration Form"
                 loading="lazy"
               />
