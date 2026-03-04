@@ -3,8 +3,10 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion } from "@/components/ui/motion";
+import { useApplyHref } from "@/lib/use-apply-href";
 
 export function Hero() {
+  const applyHref = useApplyHref();
   return (
     <section
       id="hero"
@@ -57,7 +59,7 @@ export function Hero() {
               size="lg"
               className="text-base px-8 py-6 bg-white text-primary border-2 hover:border-white hover:text-white"
             >
-              <a href="/apply">Apply for the AI School</a>
+              <a href={applyHref}>Apply for the AI School</a>
             </Button>
           </motion.div>
         </div>

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useApplyHref } from "@/lib/use-apply-href";
 import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { FadeIn } from "@/components/ui/motion";
 
@@ -45,6 +46,7 @@ const phases = [
 ];
 
 export function Journey() {
+  const applyHref = useApplyHref();
   return (
     <section
       id="journey"
@@ -142,7 +144,7 @@ export function Journey() {
         {/* CTA */}
         <FadeIn delay={0.5} className="text-center mt-12 md:mt-16">
           <Button asChild size="lg" className="text-base px-8 py-6">
-            <a href="/apply">Start Your Journey Today</a>
+            <a href={applyHref}>Start Your Journey Today</a>
           </Button>
         </FadeIn>
       </div>

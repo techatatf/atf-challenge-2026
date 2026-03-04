@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useApplyHref } from "@/lib/use-apply-href";
 
 const navLinks = [
   { href: "/#mission", label: "Mission" },
@@ -18,6 +19,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const applyHref = useApplyHref();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,7 +83,7 @@ export function Header() {
           {/* CTA Button */}
           <div className="flex items-center gap-4">
             <Button asChild size="lg" className="hidden sm:inline-flex">
-              <Link href="/apply">Apply</Link>
+              <Link href={applyHref}>Apply</Link>
             </Button>
 
             {/* Mobile Menu Button */}
@@ -131,7 +133,7 @@ export function Header() {
                 </a>
               ))}
               <Button asChild size="lg" className="mt-2">
-                <Link href="/apply">Apply Now</Link>
+                <Link href={applyHref}>Apply Now</Link>
               </Button>
             </div>
           </div>

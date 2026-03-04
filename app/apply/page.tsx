@@ -9,7 +9,22 @@ export const metadata: Metadata = {
     "Apply for the ATF AI Challenge — Africa's largest hands-on AI program. Registration closes March 31.",
 };
 
-export default function ApplyPage() {
+const FORM_BASE_URL =
+  "https://gadainfo.anasatech.com/f/atf-ai-school-registration-bjdt4n";
+
+function buildFormUrl(channel: string | string[] | undefined): string {
+  if (!channel) return FORM_BASE_URL;
+  const value = Array.isArray(channel) ? channel[0] : channel;
+  const params = new URLSearchParams({ channel: value });
+  return `${FORM_BASE_URL}?${params.toString()}`;
+}
+
+export default async function ApplyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ channel?: string | string[] }>;
+}) {
+  const params = await searchParams;
   return (
     <>
       <Header />
@@ -58,7 +73,7 @@ export default function ApplyPage() {
                 or replace the entire iframe with a script-injected form <div> */}
             <div className="border border-border rounded-lg overflow-hidden bg-card shadow-sm">
               <iframe
-                src="https://gadainfo.anasatech.com/f/atf-ai-school-registration-bjdt4n"
+                src={buildFormUrl(params.channel)}
                 className="w-full border-0"
                 height="1500"
                 title="ATF AI School Registration Form"

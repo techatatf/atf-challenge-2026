@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Facebook01Icon,
@@ -8,6 +10,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useApplyHref } from "@/lib/use-apply-href";
 
 const footerLinks = [
   { href: "/faq", label: "FAQs" },
@@ -40,6 +43,7 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const applyHref = useApplyHref();
   return (
     <footer
       id="footer"
@@ -60,7 +64,7 @@ export function Footer() {
             size="lg"
             className="w-full sm:w-auto max-w-full whitespace-normal text-center text-base px-8 py-6 bg-background text-foreground hover:bg-background/90 hover:text-background"
           >
-            <a href="/apply">Apply Now - Registration Closes March 31</a>
+            <a href={applyHref}>Apply Now - Registration Closes March 31</a>
           </Button>
         </div>
 
