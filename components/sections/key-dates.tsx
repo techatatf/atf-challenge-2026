@@ -3,7 +3,7 @@
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 const milestones = [
-  { date: "Feb 15", milestone: "Applications Open", active: true },
+  { date: "March 9", milestone: "Applications Open", active: true },
   { date: "May 31", milestone: "Applications Close", active: false },
   { date: "June 15", milestone: "AI School Begins", active: false },
   { date: "Aug 2026", milestone: "Challenge Phase Kick-off", active: false },
