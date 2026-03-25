@@ -1,7 +1,23 @@
 /**
  * Equilateral triangle geometry for the hero SVG stroke overlay.
- * Same construction as the triangular hole in `heroRedClipPathCss`: centroid at
- * normalized anchor, circumradius = baseRadiusFrac * min(w,h) * scale, rotation in degrees.
+ *
+ * Construction: centroid at normalized anchor in the section border box;
+ * circumradius = `baseRadiusFrac * min(w,h) * scale`; rotation in degrees.
+ * Vertices use the same equilateral layout as the retired clip-path hole (one vertex
+ * at local “north”, others at 120° steps).
+ *
+ * SVG stroke (applied in `Hero`, not here):
+ * - Default stroke is **centered** on the polygon edge; inner/outer halves sit on
+ *   either side of the mathematical boundary (matches the old hole silhouette).
+ * - **`vector-effect: non-scaling-stroke`** (see hero `<polygon>`) keeps stroke width
+ *   in **CSS pixels** while the triangle grows or the SVG viewBox resizes.
+ * - **`stroke-linejoin: miter`** gives sharp corners; very large stroke widths vs
+ *   short edges can produce visible miter spikes — accepted tradeoff unless we add
+ *   a stroke cap / join limit later.
+ *
+ * Extreme geometry: this module does **not** clamp radius for thick strokes or tiny
+ * viewports. Coordinates stay finite; visual overlap or spiky miters are possible
+ * and are an explicit product choice until mitigations ship (see tests).
  */
 
 export type HeroTriangleVertex = { x: number; y: number };
@@ -36,7 +52,7 @@ export function heroEquilateralTriangleVertices(
 }
 
 /**
- * `points` attribute string for `<polygon>` (2 decimal places, matches clip-path precision).
+ * `points` attribute string for `<polygon>` (two decimal places for stable DOM diffs).
  */
 export function heroEquilateralTrianglePointsAttr(
   w: number,

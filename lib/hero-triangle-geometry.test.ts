@@ -51,6 +51,27 @@ describe("heroEquilateralTriangleVertices", () => {
     expect(a[0].x).not.toBeCloseTo(b[0].x, 3);
     expect(a[0].y).not.toBeCloseTo(b[0].y, 3);
   });
+
+  /**
+   * QA / product: geometry does not clamp radius vs stroke. A thick CSS-pixel stroke
+   * on a tiny triangle may visually overlap or show long miter extensions; that is
+   * accepted unless a future phase adds limits (see module header in hero-triangle-geometry).
+   */
+  it("still yields finite vertices for a small viewport and large scale (no clamping)", () => {
+    const v = heroEquilateralTriangleVertices(
+      48,
+      48,
+      0.5,
+      0.5,
+      80,
+      0,
+      0.14
+    );
+    v.forEach((p) => {
+      expect(Number.isFinite(p.x)).toBe(true);
+      expect(Number.isFinite(p.y)).toBe(true);
+    });
+  });
 });
 
 describe("heroEquilateralTrianglePointsAttr", () => {
