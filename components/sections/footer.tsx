@@ -51,7 +51,7 @@ function FooterApplyButton() {
       size="lg"
       className="w-full sm:w-auto max-w-full whitespace-normal text-center text-base px-8 py-6 bg-background text-foreground hover:bg-background/90 hover:text-background"
     >
-      <a href={applyHref}>Apply Now - Registration Closes March 31</a>
+      <a href={applyHref}>Apply Now - Registration Closes May 31</a>
     </Button>
   );
 }
@@ -63,7 +63,7 @@ function FooterApplyButtonFallback() {
       size="lg"
       className="w-full sm:w-auto max-w-full whitespace-normal text-center text-base px-8 py-6 bg-background text-foreground hover:bg-background/90 hover:text-background"
     >
-      <a href="/apply">Apply Now - Registration Closes March 31</a>
+      <a href="/apply">Apply Now - Registration Closes May 31</a>
     </Button>
   );
 }

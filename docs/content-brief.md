@@ -121,7 +121,7 @@ You are eligible if you are:
 
 **Headline**: Ready to Build the Future? The next unicorn startup could be yours. The next breakthrough in African healthcare could be your code. It starts here.
 
-**Primary CTA Button**: [ Apply Now - Registration Closes March 31 ]
+**Primary CTA Button**: [ Apply Now - Registration Closes May 31 ]
 
 **Links**:
 

@@ -40,7 +40,7 @@ const faqCategories = [
       {
         question: "When does registration close?",
         answer:
-          "Registration for this cohort closes on March 31, 2026. We encourage early applications to avoid last-minute issues.",
+          "Registration for this cohort closes on May 31, 2026. We encourage early applications to avoid last-minute issues.",
       },
     ],
   },

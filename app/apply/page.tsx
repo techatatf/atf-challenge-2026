@@ -6,7 +6,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Apply | ATF AI Challenge",
   description:
-    "Apply for the ATF AI Challenge — Africa's largest hands-on AI program. Registration closes March 31.",
+    "Apply for the ATF AI Challenge — Africa's largest hands-on AI program. Registration closes May 31.",
 };
 
 const FORM_BASE_URL =
@@ -60,7 +60,7 @@ export default async function ApplyPage({
             <p className="text-lg md:text-xl text-background/70 max-w-2xl mx-auto">
               Complete the form below to register for Africa&apos;s largest
               hands-on AI program. Registration closes{" "}
-              <span className="text-primary font-semibold">March 31, 2026</span>
+              <span className="text-primary font-semibold">May 31, 2026</span>
               .
             </p>
           </div>
