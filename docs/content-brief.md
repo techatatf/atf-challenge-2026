@@ -115,13 +115,14 @@ You are eligible if you are:
 | Aug 2026 | Challenge Phase Kick-off |
 | May 2027 | Demo Day Finals          |
 
+**Application Deadline Extension: June 15th.**
 ---
 
 ## 7. Footer Section
 
 **Headline**: Ready to Build the Future? The next unicorn startup could be yours. The next breakthrough in African healthcare could be your code. It starts here.
 
-**Primary CTA Button**: [ Apply Now - Registration Closes May 31 ]
+**Primary CTA Button**: [ Apply Now - Registration Closes June 15 ]
 
 **Links**:
 

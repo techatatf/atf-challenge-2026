@@ -66,6 +66,10 @@ export function KeyDates() {
             ))}
           </StaggerContainer>
         </div>
+
+        <p className="text-primary font-semibold text-xl text-center mt-8">
+          Application Deadline Extension: June 15th
+        </p>
       </div>
     </section>
   );

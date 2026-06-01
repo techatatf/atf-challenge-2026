@@ -40,7 +40,7 @@ const faqCategories = [
       {
         question: "When does registration close?",
         answer:
-          "Registration for this cohort closes on May 31, 2026. We encourage early applications to avoid last-minute issues.",
+          "Registration for this cohort closes on June 15, 2026. We encourage early applications to avoid last-minute issues.",
       },
     ],
   },
@@ -136,7 +136,9 @@ export default function FAQPage() {
                           +
                         </span>
                       </summary>
-                      <p className="text-muted-foreground mt-4 pr-6">{item.answer}</p>
+                      <p className="text-muted-foreground mt-4 pr-6">
+                        {item.answer}
+                      </p>
                     </details>
                   ))}
                 </div>
