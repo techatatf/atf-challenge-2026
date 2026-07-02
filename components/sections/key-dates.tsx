@@ -3,9 +3,9 @@
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 const milestones = [
-  { date: "March 9", milestone: "Applications Open", active: true },
+  { date: "March 9", milestone: "Applications Open", active: false },
   { date: "May 31", milestone: "Applications Close", active: false },
-  { date: "June 15", milestone: "AI School Begins", active: false },
+  { date: "June 15", milestone: "AI School Begins", active: true },
   { date: "Aug 2026", milestone: "Challenge Phase Kick-off", active: false },
   { date: "May 2027", milestone: "Demo Day Finals", active: false },
 ];
@@ -66,10 +66,6 @@ export function KeyDates() {
             ))}
           </StaggerContainer>
         </div>
-
-        <p className="text-primary font-semibold text-xl text-center mt-8">
-          Application Deadline Extension: June 15th
-        </p>
       </div>
     </section>
   );
