@@ -4,16 +4,15 @@
 
 ---
 
-## 1. Fix #apply Anchor (Footer Issue)
+## 1. Application Window Automation
 
-**Problem**: The CTA button in the footer links to `#apply`, but that anchor is defined *inside* the footer itself (line 19 of `footer.tsx`). Clicking "Apply Now" does nothing useful.
+**Problem**: The primary CTA is currently controlled by the manual
+`APPLICATIONS_OPEN` flag in `lib/application-status.ts`.
 
-**Solution options**:
-- Move `#apply` to a dedicated application section above the footer
-- Link to an external application portal
-- Trigger a modal with an application form
+**Future option**: Replace the manual flag with an owned application-window
+source, such as scheduled config, CMS content, or admin-managed program state.
 
-**Files affected**: `components/sections/footer.tsx`
+**Files affected**: `lib/application-status.ts`, primary CTA components
 
 ---
 

@@ -11,7 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { motion } from "@/components/ui/motion";
-import { useApplyHref } from "@/lib/use-apply-href";
+import { primaryCta } from "@/lib/application-status";
+import { usePrimaryCtaHref } from "@/lib/use-primary-cta-href";
 import { heroEquilateralTrianglePointsAttr } from "@/lib/hero-triangle-geometry";
 import {
   motion as M,
@@ -53,27 +54,27 @@ const DEV_HERO_TRIANGLE_STROKE_WIDTH_PX = 4;
 /** `0` = off; else max upward shift of the photo as % of its height. */
 const DEV_HERO_PARALLAX_STRENGTH = 10;
 
-function HeroApplyButton() {
-  const applyHref = useApplyHref();
+function HeroPrimaryCtaButton() {
+  const primaryCtaHref = usePrimaryCtaHref();
   return (
     <Button
       asChild
       size="lg"
       className="text-base px-8 py-6 bg-white text-primary border-2 hover:border-white hover:text-white"
     >
-      <a href={applyHref}>Apply for the AI School</a>
+      <a href={primaryCtaHref}>{primaryCta.labels.hero}</a>
     </Button>
   );
 }
 
-function HeroApplyButtonFallback() {
+function HeroPrimaryCtaButtonFallback() {
   return (
     <Button
       asChild
       size="lg"
       className="text-base px-8 py-6 bg-white text-primary border-2 hover:border-white hover:text-white"
     >
-      <a href="/apply">Apply for the AI School</a>
+      <a href={primaryCta.href}>{primaryCta.labels.hero}</a>
     </Button>
   );
 }
@@ -248,8 +249,8 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
             >
-              <Suspense fallback={<HeroApplyButtonFallback />}>
-                <HeroApplyButton />
+              <Suspense fallback={<HeroPrimaryCtaButtonFallback />}>
+                <HeroPrimaryCtaButton />
               </Suspense>
             </motion.div>
           </div>

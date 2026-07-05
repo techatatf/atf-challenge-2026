@@ -6,7 +6,9 @@
 
 ## Page Goal
 
-Convert visitors into registered applicants for the AI School.
+Convert visitors into the current primary action for the AI School: registered
+applicants when applications are open, and next-cohort update subscribers when
+applications are closed.
 
 ## Target Audience
 
@@ -15,6 +17,22 @@ University students and recent graduates in Ghana, Nigeria, Kenya, and South Afr
 ## Tone
 
 Inspiring, Bold, Action-Oriented, Pan-African.
+
+## Application State & CTA Source of Truth
+
+The primary CTA is state-aware and controlled in `lib/application-status.ts`.
+Use `APPLICATIONS_OPEN` as the single flag for flipping the site between
+application and subscription mode.
+
+- When `APPLICATIONS_OPEN = true`, primary CTAs link to `/apply` and use
+  application copy.
+- When `APPLICATIONS_OPEN = false`, primary CTAs link to `/subscribe` and use
+  next-cohort update copy.
+- The `channel` query param is preserved only for `/apply`, where the
+  application form consumes it. Do not append `channel` to `/subscribe` unless
+  subscription attribution is explicitly implemented.
+- The `/apply` page may remain directly accessible while applications are
+  closed. Removing or redirecting it is a separate product decision.
 
 ---
 
@@ -26,7 +44,11 @@ Inspiring, Bold, Action-Oriented, Pan-African.
 
 **Sub-headline**: Join the ATF AI Challenge: The continent's largest hands-on Artificial Intelligence program. Upskill, form a team, and build solutions that solve Africa's toughest problems.
 
-**Primary CTA Button**: [ Apply for the AI School ] (Link to Application Portal)
+**Primary CTA Button**:
+
+- Open applications: [ Apply for the AI School ] (Link to `/apply`)
+- Closed applications: [ Get Notified for the Next Cohort ] (Link to
+  `/subscribe`)
 
 **Secondary Text**: Open to students and recent graduates in Ghana, Nigeria, Kenya, and South Africa.
 
@@ -77,7 +99,11 @@ Showcase to the World. The best teams will pitch live at Regional Demo Days in A
 - ✅ Benefit: Win Cash Prizes & Funding Opportunities.
 - ✅ Benefit: Fast-Track Access to Jobs & Internships.
 
-**Mid-Section CTA Button**: [ Start Your Journey Today ]
+**Mid-Section CTA Button**:
+
+- Open applications: [ Start Your Journey Today ] (Link to `/apply`)
+- Closed applications: [ Get Updates for the Next Cohort ] (Link to
+  `/subscribe`)
 
 ---
 
@@ -120,9 +146,21 @@ You are eligible if you are:
 
 ## 7. Footer Section
 
-**Headline**: Ready to Build the Future? The next unicorn startup could be yours. The next breakthrough in African healthcare could be your code. It starts here.
+**Final CTA Copy**:
 
-**Primary CTA Button**: [ Apply Now - Registration Closes June 15 ]
+- Open applications headline: Ready to Build the Future?
+- Open applications body: The next unicorn startup could be yours. The next
+  breakthrough in African healthcare could be your code. It starts here.
+- Closed applications headline: Get Ready for the Next Cohort
+- Closed applications body: Applications for this cohort have closed. Join the
+  updates list and be first to know when the next cohort opens.
+
+**Primary CTA Button**:
+
+- Open applications: [ Apply Now - Registration Closes June 15 ] (Link to
+  `/apply`)
+- Closed applications: [ Subscribe for Next Cohort Updates ] (Link to
+  `/subscribe`)
 
 **Links**:
 

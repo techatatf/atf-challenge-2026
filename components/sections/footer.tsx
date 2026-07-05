@@ -11,7 +11,8 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useApplyHref } from "@/lib/use-apply-href";
+import { primaryCta } from "@/lib/application-status";
+import { usePrimaryCtaHref } from "@/lib/use-primary-cta-href";
 
 const footerLinks = [
   { href: "/faq", label: "FAQs" },
@@ -43,27 +44,27 @@ const socialLinks = [
   },
 ];
 
-function FooterApplyButton() {
-  const applyHref = useApplyHref();
+function FooterPrimaryCtaButton() {
+  const primaryCtaHref = usePrimaryCtaHref();
   return (
     <Button
       asChild
       size="lg"
       className="w-full sm:w-auto max-w-full whitespace-normal text-center text-base px-8 py-6 bg-background text-foreground hover:bg-background/90 hover:text-background"
     >
-      <a href={applyHref}>Apply Now - Registration Closes June 15</a>
+      <a href={primaryCtaHref}>{primaryCta.labels.footer}</a>
     </Button>
   );
 }
 
-function FooterApplyButtonFallback() {
+function FooterPrimaryCtaButtonFallback() {
   return (
     <Button
       asChild
       size="lg"
       className="w-full sm:w-auto max-w-full whitespace-normal text-center text-base px-8 py-6 bg-background text-foreground hover:bg-background/90 hover:text-background"
     >
-      <a href="/apply">Apply Now - Registration Closes June 15</a>
+      <a href={primaryCta.href}>{primaryCta.labels.footer}</a>
     </Button>
   );
 }
@@ -78,14 +79,13 @@ export function Footer() {
         {/* Final CTA Section */}
         <div id="apply" className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            Ready to Build the Future?
+            {primaryCta.footer.heading}
           </h2>
           <p className="text-lg md:text-xl text-background/80 max-w-2xl mx-auto mb-8">
-            The next unicorn startup could be yours. The next breakthrough in
-            African healthcare could be your code. It starts here.
+            {primaryCta.footer.body}
           </p>
-          <Suspense fallback={<FooterApplyButtonFallback />}>
-            <FooterApplyButton />
+          <Suspense fallback={<FooterPrimaryCtaButtonFallback />}>
+            <FooterPrimaryCtaButton />
           </Suspense>
         </div>
 

@@ -92,15 +92,23 @@ import { motion } from "framer-motion";
 
 ---
 
-### 6. CTA Links
+### 6. Primary CTA State
 
-| Button                     | Link     |
-| -------------------------- | -------- |
-| "Apply for the AI School"  | `#apply` |
-| "Start Your Journey Today" | `#apply` |
-| "Apply Now"                | `#apply` |
+Primary CTA behavior is controlled by `lib/application-status.ts`. Do not
+hard-code application/subscription hrefs or primary CTA labels inside section
+components.
 
-> ⚠️ **IMPORTANT**: `#apply` should link to the application form section, NOT the footer. The footer has its own identity.
+`APPLICATIONS_OPEN` is the single flag for flipping the site:
+
+| State  | Destination  | Copy style |
+| ------ | ------------ | ---------- |
+| Open   | `/apply`     | Application copy such as "Apply for the AI School" |
+| Closed | `/subscribe` | Next-cohort update copy such as "Get Notified for the Next Cohort" |
+
+Use `usePrimaryCtaHref()` for client-side CTA links. It preserves the `channel`
+query param only when linking to `/apply`, because the application form consumes
+that value. Do not append `channel` to `/subscribe` unless subscription
+attribution is explicitly implemented.
 
 ---
 

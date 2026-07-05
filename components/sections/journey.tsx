@@ -3,7 +3,8 @@
 import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useApplyHref } from "@/lib/use-apply-href";
+import { primaryCta } from "@/lib/application-status";
+import { usePrimaryCtaHref } from "@/lib/use-primary-cta-href";
 import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { FadeIn } from "@/components/ui/motion";
 
@@ -46,19 +47,19 @@ const phases = [
   },
 ];
 
-function JourneyApplyButton() {
-  const applyHref = useApplyHref();
+function JourneyPrimaryCtaButton() {
+  const primaryCtaHref = usePrimaryCtaHref();
   return (
     <Button asChild size="lg" className="text-base px-8 py-6">
-      <a href={applyHref}>Start Your Journey Today</a>
+      <a href={primaryCtaHref}>{primaryCta.labels.journey}</a>
     </Button>
   );
 }
 
-function JourneyApplyButtonFallback() {
+function JourneyPrimaryCtaButtonFallback() {
   return (
     <Button asChild size="lg" className="text-base px-8 py-6">
-      <a href="/apply">Start Your Journey Today</a>
+      <a href={primaryCta.href}>{primaryCta.labels.journey}</a>
     </Button>
   );
 }
@@ -160,8 +161,8 @@ export function Journey() {
 
         {/* CTA */}
         <FadeIn delay={0.5} className="text-center mt-12 md:mt-16">
-          <Suspense fallback={<JourneyApplyButtonFallback />}>
-            <JourneyApplyButton />
+          <Suspense fallback={<JourneyPrimaryCtaButtonFallback />}>
+            <JourneyPrimaryCtaButton />
           </Suspense>
         </FadeIn>
       </div>

@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useApplyHref } from "@/lib/use-apply-href";
+import { primaryCta } from "@/lib/application-status";
+import { usePrimaryCtaHref } from "@/lib/use-primary-cta-href";
 
 const navLinks = [
   { href: "/#mission", label: "Mission" },
@@ -15,27 +16,30 @@ const navLinks = [
   { href: "/#dates", label: "Dates" },
 ];
 
-type HeaderApplyButtonProps = {
+type HeaderPrimaryCtaButtonProps = {
   label: string;
   className: string;
 };
 
-function HeaderApplyButton({ label, className }: HeaderApplyButtonProps) {
-  const applyHref = useApplyHref();
+function HeaderPrimaryCtaButton({
+  label,
+  className,
+}: HeaderPrimaryCtaButtonProps) {
+  const primaryCtaHref = usePrimaryCtaHref();
   return (
     <Button asChild size="lg" className={className}>
-      <Link href={applyHref}>{label}</Link>
+      <Link href={primaryCtaHref}>{label}</Link>
     </Button>
   );
 }
 
-function HeaderApplyButtonFallback({
+function HeaderPrimaryCtaButtonFallback({
   label,
   className,
-}: HeaderApplyButtonProps) {
+}: HeaderPrimaryCtaButtonProps) {
   return (
     <Button asChild size="lg" className={className}>
-      <Link href="/apply">{label}</Link>
+      <Link href={primaryCta.href}>{label}</Link>
     </Button>
   );
 }
@@ -108,14 +112,14 @@ export function Header() {
           <div className="flex items-center gap-4">
             <Suspense
               fallback={
-                <HeaderApplyButtonFallback
-                  label="Apply"
+                <HeaderPrimaryCtaButtonFallback
+                  label={primaryCta.labels.header}
                   className="hidden sm:inline-flex"
                 />
               }
             >
-              <HeaderApplyButton
-                label="Apply"
+              <HeaderPrimaryCtaButton
+                label={primaryCta.labels.header}
                 className="hidden sm:inline-flex"
               />
             </Suspense>
@@ -168,13 +172,16 @@ export function Header() {
               ))}
               <Suspense
                 fallback={
-                  <HeaderApplyButtonFallback
-                    label="Apply Now"
+                  <HeaderPrimaryCtaButtonFallback
+                    label={primaryCta.labels.mobileHeader}
                     className="mt-2"
                   />
                 }
               >
-                <HeaderApplyButton label="Apply Now" className="mt-2" />
+                <HeaderPrimaryCtaButton
+                  label={primaryCta.labels.mobileHeader}
+                  className="mt-2"
+                />
               </Suspense>
             </div>
           </div>
