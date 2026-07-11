@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { BriefInterestCampaignArrow } from "@/components/brief-interest-campaign-arrow";
+
 export const BRIEF_INTEREST_WOMAN_OPTIONS = {
   original: "/brief-interest/brief-interest-woman-original.png",
   referenceAligned:
@@ -13,35 +15,13 @@ export const BRIEF_INTEREST_WOMAN_SRC =
 export function BriefInterestCampaignVisual() {
   return (
     <section className="relative h-72 overflow-hidden bg-primary text-primary-foreground lg:h-auto lg:min-h-[1020px]">
-      <div className="absolute inset-x-0 top-0 z-30 flex items-start justify-between px-5 pt-4 sm:px-7 sm:pt-5 lg:px-10 lg:pt-8">
-        <Image
-          src="/atf-assets/atf-logo-vector--all-white.svg"
-          alt="African Technology Forum"
-          width={150}
-          height={100}
-          className="h-auto w-24 sm:w-28 lg:w-36"
-        />
-        <p className="pt-4 text-[10px] font-bold tracking-[0.12em] text-white uppercase lg:text-xs">
+      <div className="absolute inset-x-0 top-0 z-30 flex justify-end px-5 pt-4 sm:px-7 sm:pt-5 lg:px-10 lg:pt-8">
+        <p className="text-[10px] font-bold tracking-[0.12em] text-white uppercase lg:text-xs">
           ATF AI Challenge
         </p>
       </div>
 
-      <svg
-        data-campaign-arrow="true"
-        aria-hidden="true"
-        viewBox="0 0 320 420"
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 z-10 h-full w-full text-white/25"
-      >
-        <path
-          d="M 24 100 H 274 L 78 296 H 274"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="54"
-          strokeLinecap="square"
-          strokeLinejoin="miter"
-        />
-      </svg>
+      <BriefInterestCampaignArrow className="absolute inset-0 z-10 h-full w-full text-white/25" />
 
       <Image
         src={BRIEF_INTEREST_WOMAN_SRC}

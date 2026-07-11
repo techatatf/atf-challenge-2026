@@ -28,6 +28,8 @@ describe("Brief Interest campaign visual", () => {
     expect(BRIEF_INTEREST_WOMAN_SRC).toBe(
       "/brief-interest/brief-interest-woman-original.png",
     );
+    expect(screen.queryByAltText("African Technology Forum")).toBeNull();
+    expect(screen.getByText("ATF AI Challenge")).not.toBeNull();
   });
 
   it("keeps both campaign portraits available at the asset selection seam", () => {

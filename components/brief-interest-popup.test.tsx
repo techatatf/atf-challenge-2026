@@ -7,6 +7,7 @@ import {
   BRIEF_INTEREST_POPUP_DELAY_MS,
   BriefInterestPopup,
 } from "./brief-interest-popup";
+import { BRIEF_INTEREST_WOMAN_SRC } from "./brief-interest-campaign-visual";
 
 afterEach(() => {
   cleanup();
@@ -16,8 +17,9 @@ afterEach(() => {
 describe("Brief Interest popup", () => {
   function renderOpenPopup() {
     vi.useFakeTimers();
-    render(<BriefInterestPopup />);
+    const result = render(<BriefInterestPopup />);
     act(() => vi.advanceTimersByTime(BRIEF_INTEREST_POPUP_DELAY_MS));
+    return result;
   }
 
   it("opens only after the configured landing-page delay", () => {
@@ -31,6 +33,28 @@ describe("Brief Interest popup", () => {
 
     act(() => vi.advanceTimersByTime(1));
     expect(screen.getByRole("dialog")).not.toBeNull();
+  });
+
+  it("starts loading the selected campaign portrait during the delay", () => {
+    const requestedSources: string[] = [];
+    const NativeImage = window.Image;
+
+    class PreloadImage {
+      set src(value: string) {
+        requestedSources.push(value);
+      }
+    }
+
+    try {
+      window.Image = PreloadImage as unknown as typeof window.Image;
+      vi.useFakeTimers();
+      render(<BriefInterestPopup />);
+
+      expect(screen.queryByRole("dialog")).toBeNull();
+      expect(requestedSources).toContain(BRIEF_INTEREST_WOMAN_SRC);
+    } finally {
+      window.Image = NativeImage;
+    }
   });
 
   it("presents the Brief Interest campaign with one CTA to the interest form", () => {
@@ -61,6 +85,17 @@ describe("Brief Interest popup", () => {
     expect(ctas).toHaveLength(1);
     expect(ctas[0].textContent).toBe("Go to Interest Form");
     expect(ctas[0].getAttribute("href")).toBe("/brief");
+
+    const visual = document.querySelector(
+      '[data-brief-interest-popup-visual="true"]',
+    );
+    expect(visual).not.toBeNull();
+    expect(
+      visual?.querySelector('svg[data-campaign-arrow="true"]'),
+    ).not.toBeNull();
+    const portrait = visual?.querySelector('img[alt=""]');
+    expect(portrait?.getAttribute("src")).toBe(BRIEF_INTEREST_WOMAN_SRC);
+    expect(screen.queryByAltText("African Technology Forum")).toBeNull();
   });
 
   it("dismisses through the close icon", () => {
