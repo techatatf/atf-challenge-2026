@@ -1,6 +1,6 @@
 # Tracer: Landing-page Brief Interest popup entry path
 
-Status: ready-for-agent
+Status: done
 
 ## Parent
 
