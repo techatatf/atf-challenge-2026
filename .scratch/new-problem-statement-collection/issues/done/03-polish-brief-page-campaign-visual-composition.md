@@ -1,6 +1,6 @@
 # Polish: Brief page campaign visual composition
 
-Status: ready-for-agent
+Status: done
 
 ## Parent
 

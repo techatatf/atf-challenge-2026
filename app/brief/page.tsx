@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { BriefInterestCampaignVisual } from "@/components/brief-interest-campaign-visual";
 import { BriefInterestForm } from "@/components/brief-interest-form";
 import { Footer } from "@/components/sections/footer";
 import { Header } from "@/components/sections/header";
@@ -15,39 +16,41 @@ export default function BriefPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen bg-muted/40">
         <div className="h-14 md:h-20" />
-        <section className="bg-foreground px-4 py-12 text-background md:px-8 md:py-16 lg:px-16">
-          <div className="mx-auto max-w-3xl text-center">
-            <Link
-              href="/"
-              className="mb-7 inline-flex text-sm text-background/70 transition-colors hover:text-primary"
-            >
-              ← Back to Home
-            </Link>
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-              For organizations
-            </p>
-            <h1 className="mb-5 text-3xl font-bold tracking-tight md:text-5xl">
-              Shape what comes next in your sector
-            </h1>
-            <p className="mx-auto max-w-2xl text-base leading-7 text-background/75 md:text-lg">
-              Share your organization&apos;s interest in contributing
-              sector-specific input. Our team will guide you through the next
-              step.
-            </p>
+        <section className="mx-auto max-w-[1440px] md:px-8 md:py-10 lg:px-12 lg:py-14">
+          <div className="grid overflow-hidden border-y border-border bg-card shadow-xl md:border-x lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)]">
+            <BriefInterestCampaignVisual />
+
+            <div className="min-w-0 bg-card px-4 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10">
+              <Link
+                href="/"
+                className="mb-5 inline-flex text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              >
+                ← Back to Home
+              </Link>
+              <p className="mb-2 text-xs font-semibold tracking-[0.18em] text-primary uppercase">
+                For organizations
+              </p>
+              <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                Tell us about your interest
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+                Complete the form and the ATF team will guide your organization
+                through the next step.
+              </p>
+
+              <div className="mt-4 overflow-hidden border border-border bg-card sm:mt-6">
+                <BriefInterestForm />
+              </div>
+              <p className="mt-5 text-center text-sm text-muted-foreground">
+                Having trouble with the form?{" "}
+                <Link href="/contact" className="text-primary hover:underline">
+                  Contact support
+                </Link>
+              </p>
+            </div>
           </div>
-        </section>
-        <section className="px-4 py-12 md:px-8 md:py-16 lg:px-16">
-          <div className="mx-auto max-w-3xl overflow-hidden border border-border bg-card shadow-sm">
-            <BriefInterestForm />
-          </div>
-          <p className="mx-auto mt-6 max-w-3xl text-center text-sm text-muted-foreground">
-            Having trouble with the form?{" "}
-            <Link href="/contact" className="text-primary hover:underline">
-              Contact support
-            </Link>
-          </p>
         </section>
       </main>
       <Footer />
