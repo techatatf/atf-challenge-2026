@@ -8,10 +8,12 @@ import {
   KeyDates,
   Footer,
 } from "@/components/sections";
+import { BriefInterestPopup } from "@/components/brief-interest-popup";
 
 export default function Page() {
   return (
     <>
+      <BriefInterestPopup />
       <Header />
       <main>
         <Hero />
