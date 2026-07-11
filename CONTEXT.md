@@ -38,6 +38,28 @@ _Avoid_: Always referring to this action as Apply
 The attribution value passed through the `channel` query parameter to the application flow. It is not currently part of the subscription flow.
 _Avoid_: Source when referring to the implemented query parameter
 
+## Brief Interest language
+
+**Brief Interest**:
+An early signal that an organization may contribute sector-specific input to the ATF AI Challenge. It is not a participant-ready challenge artifact.
+_Avoid_: Brief submission, Problem Statement submission
+
+**Interested Organization**:
+An organization expressing Brief Interest without implying a formal partnership or sponsorship.
+_Avoid_: Partner, Sponsor
+
+**Brief Contact**:
+The person who submits Brief Interest on behalf of an Interested Organization.
+_Avoid_: Applicant, Participant
+
+**Problem Statement**:
+Participant-ready challenge material that ATF shapes after receiving and developing relevant input.
+_Avoid_: Brief Interest
+
+**Sector**:
+The high-level domain category attached to a Brief Interest.
+_Avoid_: Challenge Topic
+
 ## Sources of truth
 
 - `docs/content-brief.md` is the source of truth for website content and must not be edited as part of ordinary page work.
