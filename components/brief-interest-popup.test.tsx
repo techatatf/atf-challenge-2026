@@ -57,7 +57,7 @@ describe("Brief Interest popup", () => {
     }
   });
 
-  it("presents the Brief Interest campaign with one CTA to the interest form", () => {
+  it("presents the approved split campaign composition with one CTA", () => {
     renderOpenPopup();
 
     expect(
@@ -76,15 +76,34 @@ describe("Brief Interest popup", () => {
       ),
     ).not.toBeNull();
     expect(
-      screen.getByText(
-        "Be among the first organizations to participate. Limited early access.",
-      ),
+      screen.getByText("Be among the first organizations to participate."),
     ).not.toBeNull();
+    expect(screen.getByText("Limited early access.")).not.toBeNull();
 
     const ctas = screen.getAllByRole("link");
     expect(ctas).toHaveLength(1);
     expect(ctas[0].textContent).toBe("Go to Interest Form");
     expect(ctas[0].getAttribute("href")).toBe("/brief");
+    expect(ctas[0].querySelector("svg")).not.toBeNull();
+
+    expect(screen.getByAltText("African Technology Forum")).not.toBeNull();
+    expect(
+      document.querySelector('[data-brief-interest-challenge-brand="true"]')
+        ?.textContent,
+    ).toBe("ATF AI Challenge");
+    expect(
+      document.querySelector('[data-brief-interest-heading-accent="true"]')
+        ?.textContent,
+    ).toBe("in Your Sector");
+    expect(
+      document.querySelector('[data-brief-interest-early-access="true"]'),
+    ).not.toBeNull();
+
+    const composition = document.querySelector(
+      '[data-brief-interest-popup-composition="true"]',
+    );
+    expect(composition).not.toBeNull();
+    expect(composition?.className).toContain("md:grid-cols-");
 
     const visual = document.querySelector(
       '[data-brief-interest-popup-visual="true"]',
@@ -95,7 +114,12 @@ describe("Brief Interest popup", () => {
     ).not.toBeNull();
     const portrait = visual?.querySelector('img[alt=""]');
     expect(portrait?.getAttribute("src")).toBe(BRIEF_INTEREST_WOMAN_SRC);
-    expect(screen.queryByAltText("African Technology Forum")).toBeNull();
+    expect(
+      portrait?.getAttribute("data-brief-interest-portrait-composition"),
+    ).toBe("angular-desktop");
+    expect(portrait?.className).toContain("clip-path:polygon");
+    expect(visual?.className).toContain("h-44");
+    expect(visual?.className).toContain("md:h-auto");
   });
 
   it("dismisses through the close icon", () => {
