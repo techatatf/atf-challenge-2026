@@ -14,7 +14,7 @@ export const BRIEF_INTEREST_WOMAN_SRC =
 
 export function BriefInterestCampaignVisual() {
   return (
-    <section className="relative h-72 overflow-hidden bg-primary text-primary-foreground lg:h-auto lg:min-h-[1020px]">
+    <section className="relative h-72 overflow-hidden bg-primary text-primary-foreground lg:h-auto lg:min-h-[900px]">
       <div className="absolute inset-x-0 top-0 z-30 flex justify-end px-5 pt-4 sm:px-7 sm:pt-5 lg:px-10 lg:pt-8">
         <p className="text-[10px] font-bold tracking-[0.12em] text-white uppercase lg:text-xs">
           ATF AI Challenge

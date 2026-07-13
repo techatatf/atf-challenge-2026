@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import {
   consumeRecentBriefInterestCompletion,
-  isBriefInterestResponse,
   recordBriefInterestCompletion,
 } from "./brief-interest-completion";
 
@@ -63,28 +62,5 @@ describe("Brief Interest completion gate", () => {
 
     expect(recordBriefInterestCompletion(unavailableStorage)).toBe(false);
     expect(consumeRecentBriefInterestCompletion(unavailableStorage)).toBe(false);
-  });
-
-  it("accepts completion messages only from the expected same-origin frame", () => {
-    const expectedSource = {};
-    const event = {
-      data: { type: "brief-interest-response" },
-      origin: "https://challenge.example",
-      source: expectedSource,
-    };
-
-    expect(
-      isBriefInterestResponse(
-        event,
-        expectedSource,
-        "https://challenge.example",
-      ),
-    ).toBe(true);
-    expect(
-      isBriefInterestResponse(event, {}, "https://challenge.example"),
-    ).toBe(false);
-    expect(
-      isBriefInterestResponse(event, expectedSource, "https://attacker.example"),
-    ).toBe(false);
   });
 });

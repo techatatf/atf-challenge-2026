@@ -40,7 +40,7 @@ export default function BriefPage() {
                 through the next step.
               </p>
 
-              <div className="mt-4 overflow-hidden border border-border bg-card sm:mt-6">
+              <div className="mt-4 overflow-hidden bg-card sm:mt-6">
                 <BriefInterestForm />
               </div>
               <p className="mt-5 text-center text-sm text-muted-foreground">

@@ -52,6 +52,10 @@ _Avoid_: Partner, Sponsor
 The person who submits Brief Interest on behalf of an Interested Organization.
 _Avoid_: Applicant, Participant
 
+**Brief Interest Confirmation**:
+The success state shown after Mailchimp accepts a Brief Interest submission.
+_Avoid_: Final page, generic Thank-you page
+
 **Problem Statement**:
 Participant-ready challenge material that ATF shapes after receiving and developing relevant input.
 _Avoid_: Brief Interest

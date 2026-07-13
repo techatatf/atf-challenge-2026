@@ -13,7 +13,7 @@ vi.mock("next/navigation", () => ({
 afterEach(cleanup);
 
 describe("Brief Interest page", () => {
-  it("presents the campaign visual beside the existing interest form journey", () => {
+  it("presents the campaign visual beside the native Brief Interest form", () => {
     render(<BriefPage />);
 
     expect(
@@ -21,10 +21,12 @@ describe("Brief Interest page", () => {
         name: "Take an early role in shaping what comes next in your sector.",
       }),
     ).not.toBeNull();
-    expect(
-      screen
-        .getByTitle("ATF Brief Interest form")
-        .getAttribute("src"),
-    ).toBe("/forms/mailchimp-brief-interest.html");
+    const form = screen.getByRole("form", { name: "Brief Interest" });
+
+    expect(form.getAttribute("method")).toBe("post");
+    expect(form.getAttribute("target")).toBe("_top");
+    expect(form.getAttribute("action")).toBe(
+      "https://africantechnologyforum.us20.list-manage.com/subscribe/post?u=42625c20297b34e120b6e10e5&id=4110193ca4&f_id=00ee9eeef0",
+    );
   });
 });

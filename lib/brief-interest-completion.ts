@@ -3,26 +3,6 @@ const BRIEF_INTEREST_COMPLETION_MAX_AGE_MS = 10 * 60 * 1_000;
 
 type BrowserStorage = Pick<Storage, "getItem" | "removeItem" | "setItem">;
 
-type CompletionMessage = {
-  data: unknown;
-  origin: string;
-  source: unknown;
-};
-
-export function isBriefInterestResponse(
-  event: CompletionMessage,
-  expectedSource: unknown,
-  expectedOrigin: string,
-): boolean {
-  return (
-    event.origin === expectedOrigin &&
-    event.source === expectedSource &&
-    typeof event.data === "object" &&
-    event.data !== null &&
-    (event.data as { type?: unknown }).type === "brief-interest-response"
-  );
-}
-
 export function recordBriefInterestCompletion(
   storage: BrowserStorage,
   submittedAt = Date.now(),
