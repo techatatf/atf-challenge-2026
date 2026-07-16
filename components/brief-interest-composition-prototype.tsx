@@ -159,16 +159,16 @@ const PORTRAIT_POSITION: Record<
   },
   F: {
     popup: {
-      mobile: "-right-[4%] -bottom-[15%] h-[108%]",
-      desktop: "-right-[4%] -bottom-[15%] h-[108%]",
+      mobile: "-right-[5%] -bottom-[15%] h-[108%]",
+      desktop: "-right-[5%] -bottom-[15%] h-[108%]",
     },
     form: {
-      mobile: "-right-[4%] -bottom-[15%] h-[108%]",
-      desktop: "-right-[4%] -bottom-[15%] h-[108%]",
+      mobile: "-right-[5%] -bottom-[15%] h-[108%]",
+      desktop: "-right-[5%] -bottom-[15%] h-[108%]",
     },
     confirmation: {
-      mobile: "-right-[4%] -bottom-[15%] h-[108%]",
-      desktop: "-right-[4%] -bottom-[15%] h-[108%]",
+      mobile: "-right-[5%] -bottom-[15%] h-[108%]",
+      desktop: "-right-[5%] -bottom-[15%] h-[108%]",
     },
   },
   G: {
