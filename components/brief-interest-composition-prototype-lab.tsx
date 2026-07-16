@@ -273,9 +273,9 @@ function VariantSwitcher({
   current: BriefCompositionVariant;
   onStep: (direction: -1 | 1) => void;
 }) {
-  if (process.env.NODE_ENV === "production") {
-    return null;
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   return null;
+  // }
 
   return (
     <div className="fixed bottom-5 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-stone-950 px-2 py-2 text-white shadow-2xl">
