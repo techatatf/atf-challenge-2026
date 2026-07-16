@@ -346,7 +346,7 @@ export function BriefInterestCompositionPrototype({
           }
         : {
             top: squareSize * 0.1,
-            left: squareSize + remainderWidth * 0.12,
+            left: remainderWidth * 0.12,
             width: remainderWidth * 0.76,
           };
 
@@ -390,6 +390,7 @@ export function BriefInterestCompositionPrototype({
       data-symmetry-axis={
         variant === "F" ? "bottom-left-to-top-right" : undefined
       }
+      data-square-anchor={variant === "F" ? "top-right" : undefined}
       className={cn(
         "relative isolate overflow-hidden bg-primary text-white",
         className,
@@ -399,7 +400,7 @@ export function BriefInterestCompositionPrototype({
         mediaLayers
       ) : (
         <div
-          className="absolute top-0 left-0 z-0 overflow-hidden"
+          className="absolute top-0 right-0 z-0 overflow-hidden"
           style={{ width: squareSize, height: squareSize }}
         >
           {mediaLayers}
@@ -426,12 +427,20 @@ export function BriefInterestCompositionPrototype({
               height={frameGeometry.height}
               fill="white"
             />
-            <polygon points={frameGeometry.points} fill="black" transform={
-      variant === "F" && squareSize !== null
-        ? `rotate(180 ${squareSize / 2}
-        ${squareSize / 2})`
-        : undefined
-    } />
+            <g
+              transform={
+                variant === "F"
+                  ? `translate(${remainderWidth} 0)`
+                  : undefined
+              }
+            >
+              <polygon points={frameGeometry.points} fill="black" transform={
+        variant === "F" && squareSize !== null
+          ? `rotate(180 ${squareSize / 2}
+          ${squareSize / 2})`
+          : undefined
+      } />
+            </g>
           </mask>
         </defs>
         <rect
