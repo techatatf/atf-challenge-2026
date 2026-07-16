@@ -8,9 +8,9 @@ import { BriefInterestCompositionPrototypeLab } from "@/components/brief-interes
  * ?variant=A|B|C|D|E|F|G on /brief/composition-prototype.
  */
 export default function BriefCompositionPrototypePage() {
-  if (process.env.NODE_ENV === "production") {
-    notFound();
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   notFound();
+  // }
 
   return (
     <Suspense>
