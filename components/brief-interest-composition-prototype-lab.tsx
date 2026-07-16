@@ -52,6 +52,19 @@ function CompositionCopy({
 }: {
   variant: BriefCompositionVariant;
 }) {
+  if (variant === "G") {
+    return (
+      <div className="border-l-2 border-white pl-3">
+        <p className="text-[7px] font-bold tracking-[0.3em] text-white/70 uppercase sm:text-[9px]">
+          Signal 01 / Brief Interest
+        </p>
+        <p className="mt-2 max-w-xs text-[12px] leading-[1.05] font-black tracking-tight uppercase sm:text-xl">
+          Shape what comes next.
+        </p>
+      </div>
+    );
+  }
+
   if (variant === "D" || variant === "E" || variant === "F") {
     return (
       <>
@@ -338,7 +351,7 @@ export function BriefInterestCompositionPrototypeLab() {
           Throwaway prototype
         </p>
         <h1 className="mt-3 max-w-4xl text-3xl font-extrabold tracking-tight sm:text-5xl">
-          Six reusable Brief Interest compositions, switchable with{" "}
+          Seven reusable Brief Interest compositions, switchable with{" "}
           <code className="text-primary">?variant=</code>
         </h1>
         <p className="mt-5 max-w-3xl text-sm leading-7 text-stone-600">

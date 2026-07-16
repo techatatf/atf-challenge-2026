@@ -20,6 +20,7 @@ export const BRIEF_COMPOSITION_VARIANTS = {
   D: "Reference poster",
   E: "Strict-angle poster",
   F: "Symmetric square",
+  G: "Pixel signal",
 } as const;
 
 export type BriefCompositionVariant =
@@ -42,6 +43,7 @@ const ARROW_POINTS: Record<BriefCompositionVariant, string> = {
   D: "10,8 90,8 90,70 65,70 65,40 28,70 10,55 48,28 10,28",
   E: "10,8 90,8 90,70 65,70 65,40 35,70 15,50 37,28 10,28",
   F: "8,68 8,24 44,24 44,40 60,24 68,24 68,8 92,8 92,32 76,32 76,40 60,56 76,56 76,92 32,92",
+  G: "",
 };
 
 const OFFICE_POSITION: Record<
@@ -71,6 +73,10 @@ const OFFICE_POSITION: Record<
   F: {
     mobile: "object-[56%_52%]",
     desktop: "object-[54%_50%]",
+  },
+  G: {
+    mobile: "object-[54%_54%]",
+    desktop: "object-[52%_52%]",
   },
 };
 
@@ -165,6 +171,20 @@ const PORTRAIT_POSITION: Record<
       desktop: "-right-[4%] -bottom-[5%] h-[108%]",
     },
   },
+  G: {
+    popup: {
+      mobile: "left-1/2 -bottom-[135%] h-[250%] -translate-x-1/2",
+      desktop: "left-1/2 -bottom-[12%] h-[118%] -translate-x-1/2",
+    },
+    form: {
+      mobile: "left-1/2 -bottom-[58%] h-[166%] -translate-x-1/2",
+      desktop: "left-1/2 -bottom-[7%] h-[104%] -translate-x-1/2",
+    },
+    confirmation: {
+      mobile: "left-1/2 -bottom-[47%] h-[153%] -translate-x-1/2",
+      desktop: "left-1/2 -bottom-[18%] h-[125%] -translate-x-1/2",
+    },
+  },
 };
 
 const COPY_POSITION: Record<BriefCompositionVariant, string> = {
@@ -174,6 +194,7 @@ const COPY_POSITION: Record<BriefCompositionVariant, string> = {
   D: "left-[10%] bottom-[6%] max-w-[80%]",
   E: "left-[10%] bottom-[6%] max-w-[80%]",
   F: "",
+  G: "left-[7%] bottom-[7%] max-w-[72%]",
 };
 
 function buildStrictAngleGeometry(width: number, height: number) {
@@ -259,6 +280,43 @@ function buildSymmetricSquareGeometry(width: number, height: number) {
   };
 }
 
+function buildPixelSignalGeometry(width: number, height: number) {
+  const gridExtent = Math.min(width * 0.88, height * 0.88);
+  const pitch = gridExtent / 7;
+  const gutter = pitch * 0.14;
+  const cellSize = pitch - gutter;
+  const originX = (width - gridExtent) / 2;
+  const originY = Math.max((height - gridExtent) * 0.18, height * 0.04);
+  const cells = [
+    [0, 6],
+    [0, 5],
+    [1, 5],
+    [1, 4],
+    [2, 4],
+    [2, 3],
+    [3, 3],
+    [3, 2],
+    [4, 2],
+    [4, 1],
+    [4, 0],
+    [5, 0],
+    [6, 0],
+    [6, 1],
+    [6, 2],
+  ];
+
+  return {
+    viewBox: `0 0 ${width} ${height}`,
+    width,
+    height,
+    cutouts: cells.map(([column, row]) => ({
+      x: originX + column * pitch + gutter / 2,
+      y: originY + row * pitch + gutter / 2,
+      size: cellSize,
+    })),
+  };
+}
+
 /**
  * PROTOTYPE — disposable layered composition used only by the composition lab.
  *
@@ -280,7 +338,10 @@ export function BriefInterestCompositionPrototype({
   });
 
   useLayoutEffect(() => {
-    if ((variant !== "E" && variant !== "F") || !compositionRef.current) {
+    if (
+      (variant !== "E" && variant !== "F" && variant !== "G") ||
+      !compositionRef.current
+    ) {
       return;
     }
 
@@ -306,6 +367,13 @@ export function BriefInterestCompositionPrototype({
     return () => observer.disconnect();
   }, [variant]);
 
+  const pixelSignalGeometry =
+    variant === "G"
+      ? buildPixelSignalGeometry(
+          compositionSize.width,
+          compositionSize.height,
+        )
+      : null;
   const frameGeometry =
     variant === "E"
       ? buildStrictAngleGeometry(
@@ -317,6 +385,13 @@ export function BriefInterestCompositionPrototype({
             compositionSize.width,
             compositionSize.height,
           )
+      : pixelSignalGeometry
+        ? {
+            viewBox: pixelSignalGeometry.viewBox,
+            width: pixelSignalGeometry.width,
+            height: pixelSignalGeometry.height,
+            points: "",
+          }
       : {
           viewBox: "0 0 100 100",
           width: 100,
@@ -391,6 +466,7 @@ export function BriefInterestCompositionPrototype({
         variant === "F" ? "bottom-left-to-top-right" : undefined
       }
       data-square-anchor={variant === "F" ? "top-right" : undefined}
+      data-aperture-system={variant === "G" ? "pixel-signal" : undefined}
       className={cn(
         "relative isolate overflow-hidden bg-primary text-white",
         className,
@@ -427,20 +503,34 @@ export function BriefInterestCompositionPrototype({
               height={frameGeometry.height}
               fill="white"
             />
-            <g
-              transform={
-                variant === "F"
-                  ? `translate(${remainderWidth} 0)`
-                  : undefined
-              }
-            >
-              <polygon points={frameGeometry.points} fill="black" transform={
-        variant === "F" && squareSize !== null
-          ? `rotate(180 ${squareSize / 2}
-          ${squareSize / 2})`
-          : undefined
-      } />
-            </g>
+            {pixelSignalGeometry ? (
+              pixelSignalGeometry.cutouts.map((cutout, index) => (
+                <rect
+                  key={index}
+                  data-pixel-cutout="true"
+                  x={cutout.x}
+                  y={cutout.y}
+                  width={cutout.size}
+                  height={cutout.size}
+                  fill="black"
+                />
+              ))
+            ) : (
+              <g
+                transform={
+                  variant === "F"
+                    ? `translate(${remainderWidth} 0)`
+                    : undefined
+                }
+              >
+                <polygon points={frameGeometry.points} fill="black" transform={
+          variant === "F" && squareSize !== null
+            ? `rotate(180 ${squareSize / 2}
+            ${squareSize / 2})`
+            : undefined
+        } />
+              </g>
+            )}
           </mask>
         </defs>
         <rect
@@ -456,7 +546,9 @@ export function BriefInterestCompositionPrototype({
         className="pointer-events-none absolute inset-0 z-20 bg-linear-to-tr from-black/8 via-transparent to-white/5"
       />
 
-      {copy && (variant !== "F" || canUseSquareRemainderForCopy) ? (
+      {copy &&
+      (variant !== "F" || canUseSquareRemainderForCopy) &&
+      (variant !== "G" || viewport === "desktop") ? (
         <div
           className={cn(
             "absolute z-30 text-balance",
