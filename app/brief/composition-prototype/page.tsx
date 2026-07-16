@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
+// import { notFound } from "next/navigation";
 
 import { BriefInterestCompositionPrototypeLab } from "@/components/brief-interest-composition-prototype-lab";
 
