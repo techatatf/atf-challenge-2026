@@ -55,7 +55,9 @@ export function submitBriefInterest(
         typeof response === "object" &&
         response !== null &&
         "result" in response &&
-        response.result === "success"
+        response.result === "success" &&
+        "msg" in response &&
+        typeof response.msg === "string"
       ) {
         resolve({ status: "accepted" });
         return;

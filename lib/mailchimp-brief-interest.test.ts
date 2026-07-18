@@ -4,6 +4,28 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { submitBriefInterest } from "./mailchimp-brief-interest";
 
+type JsonpWindow = typeof window & {
+  [key: string]: (response: unknown) => void;
+};
+
+function getPendingJsonpRequest() {
+  const script = document.head.querySelector("script");
+  if (!script) throw new Error("Expected a pending Mailchimp JSONP script");
+
+  const url = new URL(script.src);
+  const callbackName = url.searchParams.get("c");
+  if (!callbackName) throw new Error("Expected a Mailchimp JSONP callback");
+
+  return {
+    callbackName,
+    script,
+    url,
+    respond(response: unknown) {
+      (window as JsonpWindow)[callbackName](response);
+    },
+  };
+}
+
 afterEach(() => {
   document.head.replaceChildren();
   vi.useRealTimers();
@@ -17,9 +39,7 @@ describe("Mailchimp Brief Interest submission", () => {
     fields.set("tags", "4329195");
 
     const submission = submitBriefInterest(fields);
-    const script = document.head.querySelector("script");
-    const url = new URL(script?.src ?? "");
-    const callbackName = url.searchParams.get("c") ?? "";
+    const { callbackName, respond, url } = getPendingJsonpRequest();
 
     expect(url.origin).toBe(
       "https://africantechnologyforum.us20.list-manage.com",
@@ -34,11 +54,7 @@ describe("Mailchimp Brief Interest submission", () => {
     expect(url.searchParams.get("subscribe")).toBe("Subscribe");
     expect(callbackName).not.toBe("");
 
-    (
-      window as typeof window & {
-        [key: string]: (response: unknown) => void;
-      }
-    )[callbackName]({
+    respond({
       result: "success",
       msg: "Thank you for subscribing!",
     });
@@ -50,16 +66,9 @@ describe("Mailchimp Brief Interest submission", () => {
 
   it("classifies a Mailchimp validation response without exposing provider HTML", async () => {
     const submission = submitBriefInterest(new FormData());
-    const callbackName =
-      new URL(document.head.querySelector("script")?.src ?? "").searchParams.get(
-        "c",
-      ) ?? "";
+    const { respond } = getPendingJsonpRequest();
 
-    (
-      window as typeof window & {
-        [key: string]: (response: unknown) => void;
-      }
-    )[callbackName]({
+    respond({
       result: "error",
       msg: '6 - Please enter a value <a href="https://example.com">here</a>',
     });
@@ -72,16 +81,9 @@ describe("Mailchimp Brief Interest submission", () => {
 
   it("distinguishes an existing audience contact from an accepted Brief Interest", async () => {
     const submission = submitBriefInterest(new FormData());
-    const callbackName =
-      new URL(document.head.querySelector("script")?.src ?? "").searchParams.get(
-        "c",
-      ) ?? "";
+    const { respond } = getPendingJsonpRequest();
 
-    (
-      window as typeof window & {
-        [key: string]: (response: unknown) => void;
-      }
-    )[callbackName]({
+    respond({
       result: "error",
       msg: "contact@example.com is already subscribed to list ATF.",
     });
@@ -92,11 +94,21 @@ describe("Mailchimp Brief Interest submission", () => {
     });
   });
 
+  it("rejects a malformed success response", async () => {
+    const submission = submitBriefInterest(new FormData());
+    const { respond } = getPendingJsonpRequest();
+
+    respond({ result: "success" });
+
+    await expect(submission).resolves.toEqual({
+      status: "rejected",
+      reason: "provider",
+    });
+  });
+
   it("returns an owned failure when the JSONP script cannot load", async () => {
     const submission = submitBriefInterest(new FormData());
-    const script = document.head.querySelector("script");
-    const callbackName =
-      new URL(script?.src ?? "").searchParams.get("c") ?? "";
+    const { callbackName, script } = getPendingJsonpRequest();
 
     script?.dispatchEvent(new Event("error"));
 
@@ -111,10 +123,7 @@ describe("Mailchimp Brief Interest submission", () => {
   it("times out a Mailchimp request and removes its executable state", async () => {
     vi.useFakeTimers();
     const submission = submitBriefInterest(new FormData(), { timeoutMs: 100 });
-    const callbackName =
-      new URL(document.head.querySelector("script")?.src ?? "").searchParams.get(
-        "c",
-      ) ?? "";
+    const { callbackName } = getPendingJsonpRequest();
 
     await vi.advanceTimersByTimeAsync(100);
 
