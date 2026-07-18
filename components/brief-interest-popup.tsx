@@ -11,8 +11,10 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Dialog } from "radix-ui";
 
-import { BriefInterestCampaignArrow } from "@/components/brief-interest-campaign-arrow";
-import { BRIEF_INTEREST_WOMAN_SRC } from "@/components/brief-interest-campaign-visual";
+import {
+  BRIEF_INTEREST_COMPOSITION_WOMAN_SRC,
+  BriefInterestComposition,
+} from "@/components/brief-interest-composition";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -24,7 +26,7 @@ export function BriefInterestPopup() {
 
   useEffect(() => {
     const portrait = new window.Image();
-    portrait.src = BRIEF_INTEREST_WOMAN_SRC;
+    portrait.src = BRIEF_INTEREST_COMPOSITION_WOMAN_SRC;
 
     const openTimer = window.setTimeout(
       () => setIsOpen(true),
@@ -61,23 +63,7 @@ export function BriefInterestPopup() {
             data-brief-interest-popup-composition="true"
             className="max-h-[calc(100dvh-2rem)] overflow-y-auto md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]"
           >
-            <section
-              data-brief-interest-popup-visual="true"
-              className="relative h-44 overflow-hidden bg-primary text-white sm:h-52 md:h-auto md:min-h-[35rem]"
-              aria-hidden="true"
-            >
-              <BriefInterestCampaignArrow className="absolute inset-0 z-10 h-full w-full text-white/20" />
-              <Image
-                src={BRIEF_INTEREST_WOMAN_SRC}
-                alt=""
-                data-brief-interest-portrait-composition="angular-desktop"
-                width={1024}
-                height={1792}
-                unoptimized
-                className="absolute top-3 left-1/2 z-20 h-[24rem] w-auto max-w-none -translate-x-1/2 object-contain sm:h-[28rem] md:top-8 md:h-[40rem] md:[clip-path:polygon(8%_10%,92%_10%,92%_32%,70%_32%,36%_62%,92%_62%,92%_91%,62%_91%,62%_69%,29%_69%,8%_49%,53%_10%)]"
-              />
-              <div className="absolute inset-x-0 bottom-0 z-30 h-12 bg-linear-to-t from-primary to-transparent md:h-24" />
-            </section>
+            <BriefInterestComposition className="h-44 sm:h-52 md:h-auto md:min-h-[35rem]" />
 
             <div className="px-6 py-7 sm:px-8 sm:py-9 md:flex md:min-h-[35rem] md:flex-col md:justify-center md:px-10 md:py-12">
               <div className="mb-7 flex items-center justify-between gap-5 pr-10 md:mb-10 md:pr-6">

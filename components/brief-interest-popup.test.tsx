@@ -1,17 +1,31 @@
 // @vitest-environment jsdom
 
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   BRIEF_INTEREST_POPUP_DELAY_MS,
   BriefInterestPopup,
 } from "./brief-interest-popup";
-import { BRIEF_INTEREST_WOMAN_SRC } from "./brief-interest-campaign-visual";
+import {
+  BRIEF_INTEREST_COMPOSITION_OFFICE_SRC,
+  BRIEF_INTEREST_COMPOSITION_WOMAN_SRC,
+} from "./brief-interest-composition";
+
+class ResizeObserverMock {
+  observe() {}
+  disconnect() {}
+  unobserve() {}
+}
+
+beforeEach(() => {
+  vi.stubGlobal("ResizeObserver", ResizeObserverMock);
+});
 
 afterEach(() => {
   cleanup();
   vi.useRealTimers();
+  vi.unstubAllGlobals();
 });
 
 describe("Brief Interest popup", () => {
@@ -51,7 +65,7 @@ describe("Brief Interest popup", () => {
       render(<BriefInterestPopup />);
 
       expect(screen.queryByRole("dialog")).toBeNull();
-      expect(requestedSources).toContain(BRIEF_INTEREST_WOMAN_SRC);
+      expect(requestedSources).toContain(BRIEF_INTEREST_COMPOSITION_WOMAN_SRC);
     } finally {
       window.Image = NativeImage;
     }
@@ -103,23 +117,30 @@ describe("Brief Interest popup", () => {
       '[data-brief-interest-popup-composition="true"]',
     );
     expect(composition).not.toBeNull();
-    expect(composition?.className).toContain("md:grid-cols-");
 
-    const visual = document.querySelector(
-      '[data-brief-interest-popup-visual="true"]',
+    const visual = composition?.querySelector(
+      '[data-brief-interest-composition="true"]',
     );
     expect(visual).not.toBeNull();
+    expect(visual?.getAttribute("aria-hidden")).toBe("true");
+    const artworkSources = Array.from(
+      visual?.querySelectorAll('img[alt=""]') ?? [],
+    ).map((image) => image.getAttribute("src"));
+    expect(artworkSources).toHaveLength(2);
+    expect(artworkSources[0]).toContain(
+      encodeURIComponent(BRIEF_INTEREST_COMPOSITION_OFFICE_SRC),
+    );
+    expect(artworkSources[1]).toContain(
+      encodeURIComponent(BRIEF_INTEREST_COMPOSITION_WOMAN_SRC),
+    );
     expect(
-      visual?.querySelector('svg[data-campaign-arrow="true"]'),
-    ).not.toBeNull();
-    const portrait = visual?.querySelector('img[alt=""]');
-    expect(portrait?.getAttribute("src")).toBe(BRIEF_INTEREST_WOMAN_SRC);
-    expect(
-      portrait?.getAttribute("data-brief-interest-portrait-composition"),
-    ).toBe("angular-desktop");
-    expect(portrait?.className).toContain("clip-path:polygon");
-    expect(visual?.className).toContain("h-44");
-    expect(visual?.className).toContain("md:h-auto");
+      visual?.querySelector(
+        '[data-brief-interest-composition-copy="true"]',
+      ),
+    ).toBeNull();
+
+    expect(visual?.contains(screen.getByRole("heading"))).toBe(false);
+    expect(visual?.contains(ctas[0])).toBe(false);
   });
 
   it("dismisses through the close icon", () => {
