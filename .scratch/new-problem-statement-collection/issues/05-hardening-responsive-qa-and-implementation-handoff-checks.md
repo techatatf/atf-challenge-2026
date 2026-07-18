@@ -14,7 +14,7 @@ Suggested commit message: `Harden Brief Interest campaign experience`
 
 ## What to build
 
-Do the final hardening pass for the Brief Interest campaign. Verify the full home page popup to `/brief` to `/brief-submitted` journey, tighten the native form's responsive behavior, confirm the Mailchimp success redirect, check accessibility basics, and clean up any small implementation gaps left by the previous slices.
+Do the final hardening pass for the Brief Interest campaign. Verify the full home page popup to `/brief` to `/brief-submitted` journey, tighten the native form's responsive behavior, confirm the owned Mailchimp JSONP success and failure states, check accessibility basics, and clean up any small implementation gaps left by the previous slices.
 
 This slice should not introduce new product scope. It should make the already-built experience reliable, visually coherent, and ready for human review.
 
@@ -28,8 +28,8 @@ This slice should not introduce new product scope. It should make the already-bu
 - [ ] Popup dismissal remains reliable after visual polish.
 - [ ] The CTA copy and popup copy match the PRD.
 - [ ] Basic accessibility is checked for page titles, native form labels and validation, modal semantics, focus behavior, Escape dismissal, and usable controls.
-- [ ] Mailchimp's Confirmation thank-you page redirects to the resolved absolute production URL ending in `/brief-submitted`.
-- [ ] The deployed form does not load Mailchimp's embedded-form JavaScript.
+- [ ] The deployed form does not navigate to Mailchimp or load Mailchimp's embedded-form JavaScript bundle.
+- [ ] Only a Mailchimp JSONP `result: "success"` response reveals `/brief-submitted`; errors and timeouts remain on `/brief` with values preserved.
 - [ ] Existing tests pass, and any new focused tests from earlier slices are included in the final run.
 - [ ] The implementation agent records the manual verification results in their final response.
 
@@ -38,14 +38,13 @@ This slice should not introduce new product scope. It should make the already-bu
 1. Run the app locally.
 2. Run the relevant automated checks for the project.
 3. Visit `/` on desktop, wait for the popup, click the CTA, and confirm `/brief`.
-4. In Mailchimp, set the Confirmation thank-you page redirect to `<production-origin>/brief-submitted`, replacing `<production-origin>` with the deployed website origin; record the resolved absolute URL in the manual verification results.
-5. If the audience uses double opt-in, configure the Signup thank-you page to the same resolved absolute URL.
-6. Submit a real test Brief Interest and confirm Mailchimp redirects the top-level page to `/brief-submitted`.
-7. Open a fresh context and confirm manual `/brief-submitted` redirects to `/brief`.
-8. Repeat the popup and `/brief` checks at mobile, tablet, and desktop widths.
-9. Confirm no text overlaps, no CTA label overflows, and every native form control remains usable.
-10. Confirm close icon, Escape, and overlay dismissal still work.
-11. Confirm the final response lists the Mailchimp URL, manual checks performed, and any residual risk.
+4. Submit a controlled test Brief Interest and confirm ATF routes to `/brief-submitted` only after Mailchimp returns success.
+5. Trigger or simulate provider rejection, network failure, and timeout states; confirm the form remains populated and retryable.
+6. Open a fresh context and confirm manual `/brief-submitted` redirects to `/brief`.
+7. Repeat the popup and `/brief` checks at mobile, tablet, and desktop widths.
+8. Confirm no text overlaps, no CTA label overflows, and every native form control remains usable.
+9. Confirm close icon, Escape, and overlay dismissal still work.
+10. Confirm the final response lists the manual checks performed and any residual provider risk, including existing subscribers in the shared audience.
 
 ## Blocked by
 
@@ -53,3 +52,7 @@ This slice should not introduce new product scope. It should make the already-bu
 - `.scratch/new-problem-statement-collection/issues/done/02-tracer-landing-page-brief-interest-popup-entry-path.md`
 - `.scratch/new-problem-statement-collection/issues/done/03-polish-brief-page-campaign-visual-composition.md`
 - `.scratch/new-problem-statement-collection/issues/04-polish-popup-campaign-visual-composition.md`
+
+## Prototype evidence
+
+- `prototype/brief-interest-jsonp` at `bcb54ee` captures the throwaway state-machine prototype that validated success-only confirmation, retained values on failure, timeout handling, and retry behavior.

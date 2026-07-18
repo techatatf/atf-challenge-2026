@@ -14,7 +14,7 @@ The intake must feel like part of the existing ATF AI Challenge website, while d
 
 Create a `/brief` page that collects a Brief Interest from a Brief Contact at an Interested Organization. The page should use the existing site design language first, then adapt the split red visual/form composition from the provided reference.
 
-The form itself should be a native, replaceable component separate from the page shell. It should reproduce the right-hand form treatment from the supplied reference, submit to Mailchimp through a normal top-level form POST, and preserve the campaign page, popup, and submitted-page flow if its persistence adapter changes later.
+The form itself should be a native, replaceable component separate from the page shell. It should reproduce the right-hand form treatment from the supplied reference, submit to Mailchimp through its generated JSONP endpoint without leaving ATF, and preserve the campaign page, popup, and submitted-page flow if its persistence adapter changes later.
 
 Create a landing-page popup that appears whenever someone loads or reloads the home page. The popup should introduce the Brief Interest campaign and point users to `/brief`.
 
@@ -69,7 +69,8 @@ Create a `/brief-submitted` completion page. The page should remain visible when
 45. As a future implementation agent, I want the native-form/Mailchimp decision documented, so that I do not build native persistence into the MVP.
 46. As a future implementation agent, I want the future form-refactor boundary documented, so that later visual improvements preserve the same functionality.
 47. As a future implementation agent, I want the popup behavior documented precisely, so that repeated home-page loads behave as intended.
-48. As a future implementation agent, I want the submitted-page gating plan documented, so that success-state behavior remains consistent with the Mailchimp redirect path.
+48. As a future implementation agent, I want the submitted-page gating plan documented, so that only Mailchimp acceptance can reveal the confirmation.
+49. As a Brief Contact who already receives ATF updates, I want to submit Brief Interest with the same email address, so that an existing audience membership does not exclude my organization.
 
 ## Implementation Decisions
 
@@ -104,7 +105,10 @@ Create a `/brief-submitted` completion page. The page should remain visible when
 - Mailchimp is the persistence provider for the MVP.
 - The MVP should not introduce a Vercel-hosted database or custom server-side persistence for Brief Interest submissions.
 - The supplied Mailchimp audience action and field names define the MVP submission contract.
-- The native form should submit through a top-level browser POST; it should not load Mailchimp or its validation JavaScript inside an iframe.
+- The native form should submit through Mailchimp's generated `/subscribe/post-json` JSONP contract and must not navigate the browser to a Mailchimp surface.
+- The integration must treat only `result: "success"` as acceptance. HTTP status, a submission attempt, and an existing-subscriber response are not acceptance signals.
+- Provider errors, unknown responses, network failures, and timeouts should remain on `/brief`, preserve entered values, and display only ATF-owned safe copy.
+- The project accepts that the generated JSONP endpoint is not a documented public API contract. The integration should isolate it, enforce a timeout, prevent concurrent submissions, and clean up callback and script state.
 - The `/brief` page shell must be separate from the Brief Interest Form component.
 - The Brief Interest Form component should own the controls, Mailchimp field mapping, visual treatment, and completion preparation.
 - The page shell should own the campaign layout, visual treatment, and page-level copy.
@@ -142,12 +146,12 @@ Create a `/brief-submitted` completion page. The page should remain visible when
 - `/partner` remains the general partnership page.
 - `/brief-submitted` should be created as the submitted confirmation page.
 - Manual visits to `/brief-submitted` should redirect to `/brief`.
-- Mailchimp should be configured with the absolute production `/brief-submitted` URL as its custom success redirect, with embedded-form JavaScript disabled.
-- The native form should prepare a short-lived same-origin browser submission flag before its top-level POST to Mailchimp.
+- The native form should record a short-lived same-origin browser completion flag only after Mailchimp returns `result: "success"`, then route to `/brief-submitted`.
 - The submitted-page gate is a lightweight UX guard, not tamper-resistant proof of Mailchimp acceptance.
 - If the submitted page cannot verify a real submission, it should redirect to `/brief`.
 - Progressive degradation is acceptable for campaign enhancements.
-- If client storage is unavailable, the form should fail closed before leaving for Mailchimp and explain that confirmation cannot be prepared.
+- If client storage is unavailable after Mailchimp accepts the Brief Interest, the form should show an owned inline acceptance fallback rather than misreporting failure.
+- Mailchimp's signup contract does not reliably update an existing subscriber in the same audience. Until ATF supplies a provider contract that supports this case, an existing-subscriber response must remain an explicit failure and must not reveal `/brief-submitted`.
 
 ## Testing Decisions
 
@@ -157,7 +161,8 @@ Create a `/brief-submitted` completion page. The page should remain visible when
   - popup CTA routes to `/brief`
   - `/brief` renders the campaign shell and native Brief Interest form
   - the native form contains the expected Mailchimp fields and selectable sector values
-  - submitting the native form records the short-lived recent submission-attempt marker
+  - a Mailchimp success callback records the short-lived completion marker and routes to `/brief-submitted`
+  - errors and timeouts preserve the form and do not reveal confirmation
   - manual `/brief-submitted` visits redirect to `/brief`
 - Test the page shell and redirect/gating behavior rather than Mailchimp internals.
 - Test the native form only for owned behavior:
@@ -165,11 +170,12 @@ Create a `/brief-submitted` completion page. The page should remain visible when
   - it exposes first name, last name, organization name, job title, country, email, phone, and sector fields
   - it marks first name, last name, organization name, job title, email, and sector as required
   - it keeps country and phone optional
-  - it posts through the top-level page and prepares the completion marker
+  - it prevents native navigation and submits through the isolated JSONP client
+  - it prepares the completion marker only after an accepted response
 - Test the sector list as user-visible behavior.
 - Test responsive rendering with visual/regression coverage if browser tests are added.
 - Existing prior art includes utility-level tests for application CTA behavior and hero geometry. This feature likely needs a higher-level browser-oriented seam for popup, routing, and form interaction.
-- If browser test infrastructure is not introduced, cover deterministic utilities such as submitted-page gating helpers with unit tests, then manually verify layout, native form submission, popup behavior, and the Mailchimp success redirect.
+- If browser test infrastructure is not introduced, cover the JSONP contract, form outcomes, and submitted-page gating with deterministic tests, then manually verify layout and one controlled Mailchimp submission.
 - Visual implementation should be checked on mobile and desktop viewports to ensure text does not overlap, the popup is dismissible, and the red arrow geometry remains continuous.
 
 ## Out of Scope
@@ -191,7 +197,7 @@ Create a `/brief-submitted` completion page. The page should remain visible when
 
 ## Further Notes
 
-- The form choice is resolved for the MVP: use a native, custom-styled component that posts directly to Mailchimp without iframes or Mailchimp embed JavaScript.
+- The form choice is resolved for the MVP: use a native, custom-styled component that submits through Mailchimp JSONP without iframes, top-level navigation, or an ATF server endpoint.
 - The native form uses separate first-name and last-name fields, an optional free-text country field, optional phone number, required email, required job title, required organization name, and a required sector dropdown.
 - A future integration may improve country selection, validation behavior, or persistence, but it should preserve the same functional journey unless ATF approves a separate scope change.
 - Additional privacy or consent copy for Mailchimp data collection should be handled as content/legal review if ATF wants language beyond the provider form's existing behavior.

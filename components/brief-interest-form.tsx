@@ -1,16 +1,18 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { recordBriefInterestCompletion } from "@/lib/brief-interest-completion";
-
-const BRIEF_INTEREST_MAILCHIMP_ACTION =
-  "https://africantechnologyforum.us20.list-manage.com/subscribe/post?u=42625c20297b34e120b6e10e5&id=4110193ca4&f_id=00ee9eeef0";
+import {
+  submitBriefInterest,
+  type BriefInterestSubmissionResult,
+} from "@/lib/mailchimp-brief-interest";
 
 const SECTORS = [
   "Health",
@@ -53,24 +55,47 @@ function TextField({
   );
 }
 
-export function BriefInterestForm() {
-  const [completionError, setCompletionError] = useState(false);
+type BriefInterestFormProps = {
+  submit?: (fields: FormData) => Promise<BriefInterestSubmissionResult>;
+};
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    if (!recordBriefInterestCompletion(window.sessionStorage)) {
-      event.preventDefault();
-      setCompletionError(true);
+export function BriefInterestForm({
+  submit = submitBriefInterest,
+}: BriefInterestFormProps = {}) {
+  const router = useRouter();
+  const submissionInFlight = useRef(false);
+  const [status, setStatus] = useState<
+    "editing" | "existing-contact" | "failed" | "storage-error" | "submitting"
+  >("editing");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (submissionInFlight.current) return;
+
+    submissionInFlight.current = true;
+    setStatus("submitting");
+
+    const result = await submit(new FormData(event.currentTarget));
+
+    if (result.status === "rejected") {
+      submissionInFlight.current = false;
+      setStatus(
+        result.reason === "existing-contact" ? "existing-contact" : "failed",
+      );
       return;
     }
 
-    setCompletionError(false);
+    if (!recordBriefInterestCompletion(window.sessionStorage)) {
+      submissionInFlight.current = false;
+      setStatus("storage-error");
+      return;
+    }
+
+    router.push("/brief-submitted");
   }
 
   return (
     <form
-      action={BRIEF_INTEREST_MAILCHIMP_ACTION}
-      method="post"
-      target="_top"
       aria-label="Brief Interest"
       className="space-y-6"
       onSubmit={handleSubmit}
@@ -165,18 +190,31 @@ export function BriefInterestForm() {
           name="subscribe"
           value="Subscribe"
           size="lg"
+          disabled={status === "submitting"}
           className="h-12 min-w-48 justify-between rounded-full bg-foreground px-5 text-sm text-background hover:bg-foreground/85"
         >
-          <span>Submit</span>
+          <span>{status === "submitting" ? "Submitting…" : "Submit"}</span>
           <span className="ml-5 flex size-8 items-center justify-center rounded-full bg-background text-primary">
             <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} />
           </span>
         </Button>
       </div>
-      {completionError && (
+      {status === "existing-contact" && (
         <p className="text-center text-sm text-destructive" role="alert">
-          We could not continue in this browser. Please try again or contact
-          support.
+          This email already receives ATF updates, but Mailchimp did not record
+          this Brief Interest. Please contact the ATF team for help.
+        </p>
+      )}
+      {status === "failed" && (
+        <p className="text-center text-sm text-destructive" role="alert">
+          We could not confirm that Mailchimp accepted your Brief Interest.
+          Your details are still here—please review them and try again.
+        </p>
+      )}
+      {status === "storage-error" && (
+        <p className="text-center text-sm text-destructive" role="alert">
+          Mailchimp accepted your Brief Interest, but we could not open the
+          confirmation page in this browser.
         </p>
       )}
     </form>

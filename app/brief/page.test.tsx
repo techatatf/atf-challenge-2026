@@ -14,6 +14,7 @@ import BriefPage from "./page";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/brief",
+  useRouter: () => ({ push: vi.fn() }),
   useSearchParams: () => new URLSearchParams(),
 }));
 
@@ -66,10 +67,8 @@ describe("Brief Interest page", () => {
     ).not.toBeNull();
     const form = screen.getByRole("form", { name: "Brief Interest" });
 
-    expect(form.getAttribute("method")).toBe("post");
-    expect(form.getAttribute("target")).toBe("_top");
-    expect(form.getAttribute("action")).toBe(
-      "https://africantechnologyforum.us20.list-manage.com/subscribe/post?u=42625c20297b34e120b6e10e5&id=4110193ca4&f_id=00ee9eeef0",
-    );
+    expect(form.getAttribute("method")).toBeNull();
+    expect(form.getAttribute("target")).toBeNull();
+    expect(form.getAttribute("action")).toBeNull();
   });
 });

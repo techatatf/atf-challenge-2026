@@ -56,6 +56,10 @@ _Avoid_: Applicant, Participant
 The success state shown after Mailchimp accepts a Brief Interest submission.
 _Avoid_: Final page, generic Thank-you page
 
+**Brief Interest Submission Failure**:
+The state shown when ATF cannot confirm that Mailchimp accepted a Brief Interest submission.
+_Avoid_: Confirmation, successful submission
+
 **Problem Statement**:
 Participant-ready challenge material that ATF shapes after receiving and developing relevant input.
 _Avoid_: Brief Interest
