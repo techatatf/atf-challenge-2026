@@ -32,3 +32,17 @@ This is a Next.js 16 project using the App Router with React 19 and Tailwind CSS
 - Components export both the component and its variants (e.g., `Button` and `buttonVariants`)
 - Use `cn()` from `@/lib/utils` to merge class names with proper Tailwind conflict resolution
 - Path alias `@/*` maps to the project root
+
+## Agent skills
+
+### Issue tracker
+
+Issues and PRDs are tracked as local Markdown files under `.scratch/`; PRs are not a triage surface. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Triage uses the default canonical label vocabulary. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This is a single-context repository. See `docs/agents/domain.md`.

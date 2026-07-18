@@ -1,12 +1,15 @@
 # ATF Challenge App
 
-This folder captures the working product model for the authenticated ATF Challenge App intended for `app.atfchallenge.org`.
+> [!IMPORTANT]
+> This entire folder is exploratory material for a separate, related project. It is not domain documentation for the website in this repository, and its glossary and ADRs do not govern changes outside this folder.
+
+This folder captures exploratory product thinking for a possible authenticated ATF Challenge App intended for `app.atfchallenge.org`.
 
 The app is expected to become its own repository later. Keep this folder portable: future agents and collaborators should be able to understand the product without relying on the current landing-page codebase.
 
 ## Status
 
-This is an initial working model, not a finished build specification.
+This is pure exploration, not a finished build specification and not an implementation commitment for this repository.
 
 Decisions marked as accepted are stable enough to design against. Items in [open-questions.md](./open-questions.md) need more product discussion before implementation.
 
@@ -48,4 +51,3 @@ flowchart TD
 - [ADR 0001: ATF App User is the canonical identity](./adr/0001-atf-app-user-is-canonical-identity.md)
 - [ADR 0002: Use Discord HTTP interactions for the MVP](./adr/0002-discord-http-interactions-for-mvp.md)
 - [ADR 0003: Use admin-reviewed matchmaking runs](./adr/0003-admin-reviewed-matchmaking-runs.md)
-
