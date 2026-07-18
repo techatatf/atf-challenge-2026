@@ -21,7 +21,7 @@ export default function BriefPage() {
         <section className="mx-auto max-w-[1440px] md:px-8 md:py-10 lg:px-12 lg:py-14">
           <div className="grid overflow-hidden border-y border-border bg-card shadow-xl md:border-x lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)]">
             <BriefInterestComposition
-              className="h-64 sm:h-80 lg:h-auto lg:min-h-[900px]"
+              className="h-80 lg:h-auto lg:min-h-[900px]"
               copy={
                 <>
                   <h1 className="max-w-md text-xl leading-tight font-extrabold tracking-tight text-white uppercase sm:text-2xl lg:text-4xl">
