@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { BriefInterestCampaignVisual } from "@/components/brief-interest-campaign-visual";
+import { BriefInterestComposition } from "@/components/brief-interest-composition";
 import { BriefInterestForm } from "@/components/brief-interest-form";
 import { Footer } from "@/components/sections/footer";
 import { Header } from "@/components/sections/header";
@@ -20,7 +20,22 @@ export default function BriefPage() {
         <div className="h-14 md:h-20" />
         <section className="mx-auto max-w-[1440px] md:px-8 md:py-10 lg:px-12 lg:py-14">
           <div className="grid overflow-hidden border-y border-border bg-card shadow-xl md:border-x lg:grid-cols-[minmax(0,44fr)_minmax(0,56fr)]">
-            <BriefInterestCampaignVisual />
+            <BriefInterestComposition
+              className="h-64 sm:h-80 lg:h-auto lg:min-h-[900px]"
+              copy={
+                <>
+                  <h1 className="max-w-md text-xl leading-tight font-extrabold tracking-tight text-white uppercase sm:text-2xl lg:text-4xl">
+                    Take an early role in shaping what comes next in your
+                    sector.
+                  </h1>
+                  <p className="mt-3 max-w-md text-sm leading-6 text-white/80">
+                    Share your organization&apos;s interest in contributing
+                    sector-specific input. Our team will guide you through the
+                    next step.
+                  </p>
+                </>
+              }
+            />
 
             <div className="min-w-0 bg-card px-4 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10">
               <Link
