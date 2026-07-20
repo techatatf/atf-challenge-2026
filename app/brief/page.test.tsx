@@ -41,6 +41,27 @@ afterEach(() => {
 });
 
 describe("Brief Interest page", () => {
+  it("shows brief-specific navigation back home and to updates", () => {
+    render(<BriefPage />);
+
+    expect(
+      screen.getByRole("link", { name: "ATF Logo" }).getAttribute("href"),
+    ).toBe("/");
+    expect(
+      screen.getByRole("link", { name: "Get Updates" }).getAttribute("href"),
+    ).toBe("/subscribe");
+
+    for (const label of [
+      "Mission",
+      "How It Works",
+      "Why Join",
+      "Eligibility",
+      "Dates",
+    ]) {
+      expect(screen.queryByRole("link", { name: label })).toBeNull();
+    }
+  });
+
   it("presents the production composition and supplemental campaign copy beside the native Brief Interest form", () => {
     const { container } = render(<BriefPage />);
 
