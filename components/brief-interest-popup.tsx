@@ -86,7 +86,8 @@ export function BriefInterestPopup() {
                 aria-label="Shape What Comes Next in Your Sector"
                 className="max-w-md pr-7 text-3xl leading-[1.03] font-extrabold tracking-tight text-foreground sm:text-4xl"
               >
-                <span className="block">Shape What Comes Next</span>
+                <span className="block">Shape What</span>
+                <span className="block">Comes Next</span>
                 <span
                   data-brief-interest-heading-accent="true"
                   className="block text-primary"
@@ -116,7 +117,7 @@ export function BriefInterestPopup() {
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <HugeiconsIcon icon={UserMultipleIcon} strokeWidth={2} />
                 </span>
-                <p className="text-xs leading-5 text-foreground/75">
+                <p className="text-xs leading-5 font-bold p-2">
                   Be among the first organizations to participate.
                   <span className="block">Limited early access.</span>
                 </p>
