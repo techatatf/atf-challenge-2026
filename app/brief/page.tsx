@@ -3,8 +3,8 @@ import Link from "next/link";
 
 import { BriefInterestComposition } from "@/components/brief-interest-composition";
 import { BriefInterestForm } from "@/components/brief-interest-form";
+import { BriefHeader } from "@/components/sections/brief-header";
 import { Footer } from "@/components/sections/footer";
-import { Header } from "@/components/sections/header";
 
 export const metadata: Metadata = {
   title: "Brief Interest | ATF AI Challenge",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function BriefPage() {
   return (
     <>
-      <Header />
+      <BriefHeader />
       <main className="min-h-screen bg-muted/40">
         <div className="h-14 md:h-20" />
         <section className="mx-auto max-w-[1440px] md:px-8 md:py-10 lg:px-12 lg:py-14">
